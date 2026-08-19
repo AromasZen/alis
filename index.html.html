@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Alis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0e;
+      --bg-soft: #121218;
+      --card: #15111a;
+      --gold: #8a7355;
+      --gold-soft: #b8a07a;
+      --rose: #5c1a2a;
+      --rose-bright: #8b2942;
+      --blood: #6b1d2e;
+      --silver: #9a929e;
+      --cream: #e8e0d4;
+      --muted: #7a7280;
+      --line: rgba(138, 115, 85, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Custom Cursor for Desktop */
+    @media (pointer: fine) {
+      body {
+        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%238b2942" stroke="%23b8a07a" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21C12 21 5 15 5 10C5 6.134 8.134 3 12 3C15.866 3 19 6.134 19 10C19 15 12 21 12 21Z"/><path d="M12 3C12 3 15 6 15 9C15 11 12 13 12 13C12 13 9 11 9 9C9 6 12 3 12 3Z"/></svg>') 10 10, auto;
+      }
+    }
+
+    body {
+      background: radial-gradient(ellipse at 20% -10%, #1a1118 0%, var(--bg) 55%) fixed;
+      color: var(--cream);
+      font-family: 'EB Garamond', serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Canvas Petals Overlay */
+    #petals-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 1.5rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      color: var(--gold-soft);
+      display: block;
+      margin-bottom: 1.1rem;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 4rem;
+      padding-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(3.2rem, 11vw, 6.5rem);
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 25px rgba(107, 29, 46, 0.5);
+    }
+
+    .hero p.sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 1.2rem;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---------- signature: distance map ---------- */
+    .distance-map {
+      width: min(560px, 90vw);
+      margin: 3.2rem auto 0;
+    }
+
+    .distance-map svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .arc-path {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-dasharray: 480;
+      stroke-dashoffset: 480;
+      animation: draw 2.6s 0.4s ease-out forwards;
+      opacity: 0.7;
+    }
+
+    @keyframes draw {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .pulse-dot {
+      offset-path: path("M 40,150 Q 260,10 480,120");
+      animation: travel 4.5s 3s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes travel {
+      0% {
+        offset-distance: 0%;
+        opacity: 0;
+      }
+
+      8% {
+        opacity: 1;
+      }
+
+      92% {
+        opacity: 1;
+      }
+
+      100% {
+        offset-distance: 100%;
+        opacity: 0;
+      }
+    }
+
+    .map-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      fill: var(--muted);
+    }
+
+    .city-dot {
+      fill: var(--silver);
+    }
+
+    .city-dot circle:first-child {
+      animation: ping 2.4s ease-out infinite;
+      stroke: var(--silver);
+    }
+
+    @keyframes ping {
+      0% {
+        r: 3;
+        opacity: 0.5;
+      }
+
+      70% {
+        r: 11;
+        opacity: 0;
+      }
+
+      100% {
+        r: 11;
+        opacity: 0;
+      }
+    }
+
+    .distance-caption {
+      text-align: center;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      margin-top: 0.8rem;
+    }
+
+    /* ---------- divider ---------- */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--gold);
+      opacity: 0.7;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
+    }
+
+    .divider svg {
+      width: 40px;
+      height: 40px;
+      fill: var(--rose-bright);
+      opacity: 0.8;
+    }
+
+    /* ---------- counters ---------- */
+    .counters {
+      text-align: center;
+    }
+
+    .counters h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-weight: 400;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      margin-bottom: 2.5rem;
+      color: var(--gold-soft);
+    }
+
+    .counter-card {
+      background: linear-gradient(155deg, var(--card), var(--bg-soft));
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 2.4rem 1.5rem;
+      margin-bottom: 1.6rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .counter-card .label {
+      font-family: 'Jost', sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      color: var(--gold-soft);
+      margin-bottom: 1.4rem;
+    }
+
+    .digits {
+      display: flex;
+      justify-content: center;
+      gap: clamp(0.6rem, 3vw, 1.8rem);
+      flex-wrap: wrap;
+    }
+
+    .digit-group {
+      min-width: 64px;
+    }
+
+    .digit-group .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.1rem, 6vw, 3.2rem);
+      font-weight: 500;
+      color: var(--cream);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 10px rgba(232, 224, 212, 0.2);
+    }
+
+    .digit-group .unit {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .birthday-banner {
+      display: none;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.6rem, 5vw, 2.3rem);
+      color: var(--blood);
+      text-shadow: 0 0 15px rgba(107, 29, 46, 0.4);
+    }
+
+    .moon-phase {
+      margin-top: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--silver);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .moon-phase span.moon-icon {
+      font-style: normal;
+      font-size: 1.2rem;
+    }
+
+    /* ---------- letter ---------- */
+    .letter-container {
+      perspective: 1000px;
+      margin-top: 2rem;
+    }
+
+    .letter-wrapper {
+      position: relative;
+      width: 100%;
+      transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+      transform-style: preserve-3d;
+    }
+
+    .wax-seal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at 30% 30%, #a32a45, #5c1a2a);
+      border-radius: 50%;
+      box-shadow:
+        inset 0 0 10px rgba(0, 0, 0, 0.8),
+        0 4px 10px rgba(0, 0, 0, 0.6),
+        0 0 0 2px #3a0d18;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.5s ease;
+    }
+
+    .wax-seal::before {
+      content: 'A';
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2.5rem;
+      color: #1a060a;
+      text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .wax-seal:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+      box-shadow:
+        inset 0 0 10px rgba(0, 0, 0, 0.8),
+        0 6px 15px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(139, 41, 66, 0.4);
+    }
+
+    .letter {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: clamp(2rem, 6vw, 3.5rem);
+      position: relative;
+      opacity: 0.1;
+      filter: blur(5px);
+      transition: all 1s ease;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Candle light effect inside letter */
+    .letter::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(184, 160, 122, 0.05), transparent 70%);
+      opacity: 0;
+      animation: flicker 4s infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes flicker {
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      25% {
+        opacity: 0.7;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+
+      75% {
+        opacity: 0.8;
+      }
+    }
+
+    .letter.opened {
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    .wax-seal.broken {
+      transform: translate(-50%, -50%) scale(2) rotate(15deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .letter p {
+      font-size: 1.18rem;
+      color: var(--cream);
+      margin-bottom: 1.2rem;
+    }
+
+    .letter .sign {
+      text-align: right;
+      font-family: 'Cinzel Decorative', serif;
+      color: var(--gold-soft);
+      margin-top: 2rem;
+      font-size: 1.3rem;
+    }
+
+    /* ---------- gallery ---------- */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .frame {
+      aspect-ratio: 4/5;
+      border-radius: 3px;
+      background: #0a0a0e;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+
+      /* Scroll reveal defaults */
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+    }
+
+    .frame.revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.8) 120%);
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .frame:hover {
+      transform: translateY(-5px);
+      border-color: var(--blood);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+    }
+
+    .frame:hover::after {
+      opacity: 0.3;
+    }
+
+    .frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      filter: grayscale(20%) brightness(0.6) contrast(1.1);
+      transition: all 0.5s ease;
+    }
+
+    .frame:hover img {
+      filter: grayscale(0%) brightness(1) contrast(1);
+    }
+
+    .frame:nth-child(1) img {
+      filter: grayscale(20%) brightness(0.5) blur(3px) contrast(1.1);
+    }
+
+    .frame:nth-child(1):hover img {
+      filter: grayscale(0%) brightness(1) blur(0px) contrast(1);
+    }
+
+    .frame .ph {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+      color: var(--cream);
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0, 0, 0, 0.8);
+      z-index: 2;
+      position: relative;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .frame:nth-child(1) {
+      grid-column: span 2;
+      aspect-ratio: 16/10;
+    }
+
+    .ampersand {
+      grid-row: 2;
+      grid-column: 1 / span 2;
+      place-self: center;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(3.5rem, 12vw, 5rem);
+      color: var(--gold-soft);
+      z-index: 10;
+      pointer-events: none;
+      text-shadow: 0 5px 20px rgba(0, 0, 0, 1), 0 0 10px rgba(0, 0, 0, 0.8);
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .ampersand.revealed {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ---------- memories cta ---------- */
+    .memories-cta {
+      text-align: center;
+    }
+
+    .cta-card {
+      background: linear-gradient(155deg, var(--card), var(--bg-soft));
+      border: 1px dashed rgba(138, 115, 85, 0.4);
+      border-radius: 4px;
+      padding: 3rem 1.5rem;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .cta-card p {
+      color: var(--cream);
+      font-size: 1.15rem;
+      max-width: 400px;
+    }
+
+    .wsp-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid var(--blood);
+      color: var(--cream);
+      padding: 0.8rem 2rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(107, 29, 46, 0.2);
+    }
+
+    .wsp-button:hover {
+      background: rgba(107, 29, 46, 0.2);
+      border-color: var(--rose-bright);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(107, 29, 46, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* ---------- footer ---------- */
+    footer {
+      text-align: center;
+      padding: 4rem 1.5rem 5rem;
+      font-family: 'Jost', sans-serif;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+    }
+
+    footer .heart {
+      color: var(--blood);
+    }
+
+    /* ---------- sobres ---------- */
+    .sobres-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+
+    .sobre {
+      background: linear-gradient(155deg, var(--card), var(--bg-soft));
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 2rem 1.5rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .sobre:hover {
+      transform: translateY(-5px);
+      border-color: rgba(139, 41, 66, 0.6);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 41, 66, 0.15);
+    }
+
+    .sobre-icon-svg {
+      width: 44px;
+      height: 44px;
+      color: var(--gold-soft);
+    }
+
+    .sobre-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+
+    .sobre-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--gold-soft);
+      line-height: 1.4;
+    }
+
+    .sobre-content {
+      display: none;
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      color: var(--cream);
+      line-height: 1.6;
+      margin-top: 0.5rem;
+      font-style: italic;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .sobre.abierto {
+      cursor: default;
+      border-color: rgba(139, 41, 66, 0.5);
+      background: linear-gradient(155deg, #1a1020, var(--card));
+    }
+
+    .sobre.abierto .sobre-title {
+      font-size: 0.72rem;
+      font-family: 'Jost', sans-serif;
+      letter-spacing: 0.1em;
+      font-style: normal;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.7;
+    }
+
+    .sobre.abierto .sobre-content {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sobre-seal {
+      width: 36px;
+      height: 36px;
+      background: radial-gradient(circle at 30% 30%, #a32a45, #5c1a2a);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.9rem;
+      color: #1a060a;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .sobre.abierto .sobre-seal {
+      transform: scale(0) rotate(30deg);
+      opacity: 0;
+      height: 0;
+      width: 0;
+      margin: 0;
+    }
+
+    /* ---------- extrañitis ---------- */
+    .extrañitis-section {
+      text-align: center;
+    }
+
+    .extrañitis-btn {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .extrañitis-heart-svg {
+      width: 80px;
+      height: 80px;
+      display: block;
+    }
+
+    .extrañitis-heart {
+      font-size: 5rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 20px rgba(139, 41, 66, 0.4));
+      transition: transform 0.15s ease;
+      animation: heartbeat 2.5s ease-in-out infinite;
+      display: block;
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      14% {
+        transform: scale(1.15);
+      }
+
+      28% {
+        transform: scale(1);
+      }
+
+      42% {
+        transform: scale(1.08);
+      }
+
+      70% {
+        transform: scale(1);
+      }
+    }
+
+    .extrañitis-btn:hover .extrañitis-heart-svg {
+      width: 80px;
+      height: 80px;
+      display: block;
+    }
+
+    .extrañitis-heart {
+      animation: none;
+      transform: scale(1.2);
+      filter: drop-shadow(0 0 30px rgba(139, 41, 66, 0.8));
+    }
+
+    .extrañitis-label {
+      font-family: 'Jost', sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      color: var(--gold-soft);
+    }
+
+    .extrañitis-counter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--silver);
+      font-style: italic;
+      margin-top: 0.3rem;
+      min-height: 1.5rem;
+      transition: opacity 0.3s ease;
+    }
+
+    .extrañitis-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle-heart {
+      position: absolute;
+      font-size: 1.4rem;
+      opacity: 0;
+      animation: floatUp 1.2s ease-out forwards;
+      pointer-events: none;
+      bottom: 60px;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-120px) scale(0.4);
+      }
+    }
+
+    /* ---------- games link ---------- */
+    .games-link-section {
+      text-align: center;
+      padding-bottom: 2rem;
+    }
+
+    .games-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--cream);
+      padding: 1rem 2.5rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 0 rgba(139, 41, 66, 0);
+      margin-top: 1.5rem;
+    }
+
+    .games-btn:hover {
+      border-color: var(--rose-bright);
+      background: rgba(107, 29, 46, 0.15);
+      color: #fff;
+      box-shadow: 0 0 30px rgba(107, 29, 46, 0.3);
+      transform: translateY(-2px);
+      gap: 1rem;
+    }
+
+    .games-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--rose-bright);
+      transition: transform 0.3s ease;
+    }
+
+    .games-btn:hover svg {
+      transform: rotate(15deg);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .arc-path,
+      .pulse-dot,
+      .city-dot circle:first-child,
+      .wax-seal,
+      .letter,
+      .frame,
+      .letter::before,
+      #petals-canvas {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .arc-path {
+        stroke-dashoffset: 0;
+      }
+
+      .frame {
+        opacity: 1;
+        transform: none;
+      }
+
+      .wax-seal {
+        display: none;
+      }
+
+      .letter {
+        opacity: 1;
+        filter: none;
+      }
+
+      #petals-canvas {
+        display: none;
+      }
+
+      .extrañitis-heart-svg {
+        width: 80px;
+        height: 80px;
+        display: block;
+      }
+
+      .extrañitis-heart {
+        animation: none !important;
+      }
+    }
+
+    /* ---------- Contrato de Almas ---------- */
+    @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+
+    .contract-section {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .contract-scroll {
+      background: #e8dbce;
+      color: #3b2c2c;
+      padding: 3.5rem 2.5rem;
+      border-radius: 2px;
+      box-shadow: inset 0 0 40px rgba(100, 60, 30, 0.5), 0 15px 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+      margin: 2rem auto;
+      max-width: 600px;
+      text-align: left;
+      font-family: 'Pinyon Script', cursive;
+      font-size: 1.6rem;
+      line-height: 1.4;
+      border: 1px solid #c2a991;
+    }
+
+    .contract-scroll::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.1"/></svg>');
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .contract-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #6b1d2e;
+      border-bottom: 2px solid rgba(107, 29, 46, 0.3);
+      padding-bottom: 1rem;
+    }
+
+    .contract-clause {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .contract-clause-num {
+      color: #6b1d2e;
+      font-weight: bold;
+    }
+
+    .contract-signatures {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px dashed rgba(107, 29, 46, 0.4);
+      padding-top: 2rem;
+    }
+
+    .contract-sign-box {
+      text-align: center;
+      width: 40%;
+    }
+
+    .contract-sign-line {
+      border-bottom: 1px solid #3b2c2c;
+      height: 30px;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ---------- Logros Cooperativos ---------- */
+    .achievements-section {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .achievements-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .achievement-card {
+      background: linear-gradient(90deg, var(--card), var(--bg-soft));
+      border-left: 3px solid var(--muted);
+      padding: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      border-radius: 0 4px 4px 0;
+      text-align: left;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .achievement-card.unlocked {
+      border-left-color: var(--gold);
+      background: linear-gradient(90deg, rgba(21, 17, 26, 0.9), rgba(138, 115, 85, 0.1));
+    }
+
+    .achievement-icon {
+      width: 50px;
+      height: 50px;
+      background: #111;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      flex-shrink: 0;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .achievement-card.unlocked .achievement-icon {
+      border-color: var(--gold);
+      color: var(--gold-soft);
+      box-shadow: inset 0 0 15px rgba(138, 115, 85, 0.2), 0 0 15px rgba(138, 115, 85, 0.2);
+    }
+
+    .achievement-info h3 {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .achievement-card.unlocked .achievement-info h3 {
+      color: var(--cream);
+    }
+
+    .achievement-info p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.3;
+    }
+
+    .achievement-card.unlocked .achievement-info p {
+      color: var(--silver);
+    }
+
+
+    /* ---------- Jodí Counter ---------- */
+    .jodi-float {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+
+    .jodi-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6b1d2e, #3a0d18);
+      border: 2px solid rgba(139, 41, 66, 0.6);
+      color: var(--cream);
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(107, 29, 46, 0.5), 0 0 30px rgba(107, 29, 46, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .jodi-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 30px rgba(107, 29, 46, 0.7), 0 0 40px rgba(107, 29, 46, 0.4);
+    }
+
+    .jodi-btn:active {
+      transform: scale(0.9);
+    }
+
+    .jodi-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--gold);
+      color: #0a0a0e;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .jodi-toast {
+      background: linear-gradient(135deg, #1a0e15, #0f0a12);
+      border: 1px solid rgba(139, 41, 66, 0.4);
+      border-radius: 6px;
+      padding: 0.8rem 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--cream);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      max-width: 260px;
+      text-align: right;
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+      transition: all 0.4s ease;
+      pointer-events: none;
+    }
+
+    .jodi-toast.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* ---------- Cripta de Secretos ---------- */
+    .vault-section {
+      text-align: center;
+    }
+
+    .vault-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .vault-door {
+      background: linear-gradient(180deg, #1a1520, #0d0a10);
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 2.5rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .vault-door::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(138, 115, 85, 0.1);
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .vault-door:hover {
+      border-color: var(--rose-bright);
+      box-shadow: 0 0 30px rgba(139, 41, 66, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .vault-lock-icon {
+      width: 40px;
+      height: 40px;
+      color: var(--muted);
+      transition: all 0.4s ease;
+    }
+
+    .vault-door-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.8rem;
+      color: var(--gold-soft);
+      letter-spacing: 0.06em;
+    }
+
+    .vault-door-hint {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .vault-door.unlocked {
+      border-color: var(--gold);
+      background: linear-gradient(180deg, #1a1520, #150e18);
+      cursor: default;
+    }
+
+    .vault-door.unlocked .vault-lock-icon {
+      color: var(--gold-soft);
+    }
+
+    .vault-secret {
+      display: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--cream);
+      line-height: 1.5;
+      margin-top: 0.5rem;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.5s ease;
+    }
+
+    .vault-door.unlocked .vault-secret {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .vault-door.unlocked .vault-door-hint {
+      display: none;
+    }
+
+    .vault-prompt-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vault-prompt-overlay.show {
+      display: flex;
+    }
+
+    .vault-prompt-box {
+      background: linear-gradient(155deg, #1a1020, var(--card));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 2.5rem;
+      max-width: 380px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+    }
+
+    .vault-prompt-box h3 {
+      font-family: 'Cinzel Decorative', serif;
+      color: var(--gold-soft);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .vault-prompt-box p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .vault-input {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--cream);
+      padding: 0.7rem 1rem;
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      border-radius: 3px;
+      width: 100%;
+      text-align: center;
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .vault-input:focus {
+      border-color: var(--gold);
+    }
+
+    .vault-input.error {
+      border-color: #ff4444;
+      animation: shake-input 0.4s ease;
+    }
+
+    @keyframes shake-input {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-6px);
+      }
+
+      75% {
+        transform: translateX(6px);
+      }
+    }
+
+    .vault-submit-btn {
+      background: transparent;
+      border: 1px solid var(--rose-bright);
+      color: var(--cream);
+      padding: 0.7rem 2rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-right: 0.5rem;
+    }
+
+    .vault-submit-btn:hover {
+      background: rgba(107, 29, 46, 0.2);
+    }
+
+    .vault-cancel-btn {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 0.7rem 1.5rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .vault-cancel-btn:hover {
+      color: var(--cream);
+      border-color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="petals-canvas"></canvas>
+
+  <section class="hero">
+    <span class="eyebrow">Buenos Aires · Nebraska</span>
+    <h1>Para Alis</h1>
+    <p class="sub">A la distancia, pero siempre cerca</p>
+
+    <div class="distance-map">
+      <svg viewBox="0 0 520 180">
+        <path class="arc-path" d="M 40,150 Q 260,10 480,120"></path>
+        <g class="city-dot">
+          <circle cx="40" cy="150" r="3" fill="none" stroke-width="1"></circle>
+          <circle cx="40" cy="150" r="3.5"></circle>
+        </g>
+        <text x="18" y="172" class="map-label">Buenos Aires</text>
+
+        <g class="city-dot">
+          <circle cx="480" cy="120" r="3" fill="none" stroke-width="1"></circle>
+          <circle cx="480" cy="120" r="3.5"></circle>
+        </g>
+        <text x="440" y="142" class="map-label">Nebraska</text>
+
+        <circle class="pulse-dot" r="3" fill="var(--blood)"></circle>
+      </svg>
+    </div>
+    <p class="distance-caption">un mismo cielo, 9.346 km de distancia</p>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <!-- Stylized rose SVG -->
+      <path d="M12,2C8,2 4,5 4,9C4,12.5 7,15.5 12,22C17,15.5 20,12.5 20,9C20,5 16,2 12,2Z" opacity="0.1" />
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Thorns -->
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <section class="counters">
+    <h2>Nuestro Tiempo</h2>
+
+    <div class="counter-card">
+      <div class="label">Llevamos juntos</div>
+      <div class="digits">
+        <div class="digit-group">
+          <div class="num" id="ct-days">–</div>
+          <div class="unit">días</div>
+        </div>
+        <div class="digit-group">
+          <div class="num" id="ct-hours">–</div>
+          <div class="unit">horas</div>
+        </div>
+        <div class="digit-group">
+          <div class="num" id="ct-mins">–</div>
+          <div class="unit">min</div>
+        </div>
+        <div class="digit-group">
+          <div class="num" id="ct-secs">–</div>
+          <div class="unit">seg</div>
+        </div>
+      </div>
+      <div class="moon-phase" id="moon-phase-container">
+        Luna <span class="moon-icon" id="moon-icon">🌑</span> sobre nosotros
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <section>
+    <span class="eyebrow">Para vos</span>
+    <div class="letter-container">
+      <div class="letter-wrapper">
+        <div class="wax-seal" id="wax-seal"></div>
+        <div class="letter" id="the-letter">
+          <p>
+            Mirá, escribí y borré esto como cinco veces porque no quería que salga demasiado soft.
+            Así que acá va la versión real: me caes re bien, me haces reír como pocos y encima
+            bancás que te joda con lo de “eh negra…” y después me mandés a cagar.
+            Esa dinámica me encanta. Me re gusta que seamos así de jodones el uno con el otro.
+            Y aunque esté a 9000 km, quería que sepas que te pienso y que me alegra
+            un montón que existas (aunque seas una quilombera).
+          </p>
+          <div class="sign">— Agus</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <section>
+    <span class="eyebrow">Nosotros</span>
+    <div class="gallery-grid">
+      <div class="frame reveal-on-scroll">
+        <img src="img/us.png" alt="us">
+        <span class="ph">Us, one day</span>
+      </div>
+      <div class="frame reveal-on-scroll">
+        <img src="img/you.jpeg" alt="you">
+        <span class="ph">you</span>
+      </div>
+      <div class="frame reveal-on-scroll">
+        <img src="img/me.jpeg" alt="me">
+        <span class="ph">me</span>
+      </div>
+      <div class="ampersand reveal-on-scroll">&amp;</div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,2C8,2 4,5 4,9C4,12.5 7,15.5 12,22C17,15.5 20,12.5 20,9C20,5 16,2 12,2Z" opacity="0.1" />
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <section class="memories-cta">
+    <span class="eyebrow">Memorias en construcción</span>
+    <div class="video-grid reveal-on-scroll"
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem 1.5rem; margin-top: 1.5rem; justify-items: center;">
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
+        <video
+          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
+          controls>
+          <source src="videos/WhatsApp Video 2026-08-16 at 21.31.53.mp4" type="video/mp4">
+        </video>
+        <span
+          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
+          parte de tu fan #1</span>
+      </div>
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
+        <video
+          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
+          controls>
+          <source src="videos/WhatsApp Video 2026-08-16 at 22.06.26.mp4" type="video/mp4">
+        </video>
+        <span
+          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
+          parte de tu fan #1</span>
+      </div>
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
+        <video
+          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
+          controls>
+          <source src="videos/WhatsApp Video 2026-08-16 at 23.36.14.mp4" type="video/mp4">
+        </video>
+        <span
+          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
+          parte de tu fan #1</span>
+      </div>
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
+        <video
+          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
+          controls>
+          <source src="videos/WhatsApp Video 2026-08-18 at 14.09.21.mp4" type="video/mp4">
+        </video>
+        <span
+          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
+          parte de tu fan #1</span>
+      </div>
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
+        <video
+          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
+          controls>
+          <source src="videos/WhatsApp Video 2026-08-18 at 15.10.13.mp4" type="video/mp4">
+        </video>
+        <span
+          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
+          parte de tu fan #1</span>
+      </div>
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
+        <video
+          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
+          controls>
+          <source src="videos/WhatsApp Video 2026-08-18 at 16.01.46.mp4" type="video/mp4">
+        </video>
+        <span
+          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
+          parte de tu fan #1</span>
+      </div>
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
+        <video
+          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
+          controls>
+          <source src="videos/WhatsApp Video 2026-08-19 at 13.49.08.mp4" type="video/mp4">
+        </video>
+        <span
+          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
+          parte de tu fan #1</span>
+      </div>
+    </div>
+    <div class="cta-card reveal-on-scroll">
+      <p>Este espacio está reservado para todo lo que vayamos sumando.</p>
+      <a href="https://wa.me/5492914425849?text=mandame%20fotos%2C%20que%20tu%20sabe%20que%20me%20gusta" target="_blank"
+        rel="noopener noreferrer" class="wsp-button">
+        Agregar recuerdos
+      </a>
+    </div>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <!-- SOBRES ÁBRELO CUANDO -->
+  <section>
+    <span class="eyebrow">Para cuando lo necesites (o cuando te dé la gana de joder)</span>
+    <h2
+      style="font-family:'Cinzel Decorative',serif;font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--gold-soft);text-align:center;margin-bottom:0.5rem;">
+      Ábrelo cuando...</h2>
+    <p
+      style="text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted);font-size:1.1rem;">
+      Toca el sobre que necesites, mi reina oscura</p>
+    <div class="sobres-grid">
+
+      <div class="sobre reveal-on-scroll" id="sobre-1">
+        <div class="sobre-seal">A</div>
+        <div class="sobre-icon"><svg class="sobre-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              fill="var(--gold-soft)" opacity="0.8" />
+          </svg></div>
+        <div class="sobre-title">...me extrañes mucho</div>
+        <div class="sobre-content">Sé que la distancia es una forrada. Pero cada vez que te agarra la nostalgia, recordá
+          que del otro lado del planeta hay un pelotudo que está pensando exactamente en vos. Siempre. Ni los 9000 km me
+          van a hacer dejar de joderte.</div>
+      </div>
+
+      <div class="sobre reveal-on-scroll" id="sobre-2">
+        <div class="sobre-seal">A</div>
+        <div class="sobre-icon"><svg class="sobre-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="var(--gold-soft)" opacity="0.8" />
+          </svg></div>
+        <div class="sobre-title">...no puedas dormir</div>
+        <div class="sobre-content">Cuando no puedas dormir, estás mirando el mismo cielo que yo (aunque a vos te toque
+          de noche y a mí de día, porque el huso horario nos odia). Cerrá los ojos. Estoy ahí. Y si no te dormís, al
+          menos jodeme hasta que te dé sueño.</div>
+      </div>
+
+      <div class="sobre reveal-on-scroll" id="sobre-3">
+        <div class="sobre-seal">A</div>
+        <div class="sobre-icon"><svg class="sobre-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <circle cx="12" cy="12" r="5" fill="var(--gold-soft)" opacity="0.8" />
+            <path
+              d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg></div>
+        <div class="sobre-title">...necesites que te alegre el día</div>
+        <div class="sobre-content">Sos de esas personas que hacen que hasta los días de mierda valgan la pena. Sí, vos.
+          La quilombera. La que me hace reír aunque esté de mal humor. Hoy va a estar bien. Te lo juro. Y si no, al
+          menos nos reímos de lo malo juntos.</div>
+      </div>
+
+      <div class="sobre reveal-on-scroll" id="sobre-4">
+        <div class="sobre-seal">A</div>
+        <div class="sobre-icon"><svg class="sobre-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+            <line x1="9" y1="9" x2="9.01" y2="9" />
+            <line x1="15" y1="9" x2="15.01" y2="9" />
+          </svg></div>
+        <div class="sobre-title">...estés triste</div>
+        <div class="sobre-content">No tengo mucho para darte desde acá (más que mi hermosa presencia virtual), pero
+          tengo esto: te escucho, te banco, y no me voy a ningún lado. Contame. O no me cuentes nada y simplemente sabe
+          que estoy. Y si hace falta, te jodo hasta que se te pase un poco.</div>
+      </div>
+
+      <div class="sobre reveal-on-scroll" id="sobre-5">
+        <div class="sobre-seal">A</div>
+        <div class="sobre-icon"><svg class="sobre-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+              fill="var(--gold-soft)" opacity="0.5" />
+          </svg></div>
+        <div class="sobre-title">...quieras recordar por qué vale la pena</div>
+        <div class="sobre-content">Porque cada buena charla, cada pelea estúpida resuelta, cada risa compartida desde
+          lejos… y cada vez que te jodo te reís igual. Todo eso construye algo real. Lo
+          nuestro vale la pena. Siempre. Aunque seamos dos boludos del otro lado del mundo.</div>
+      </div>
+
+      <div class="sobre reveal-on-scroll" id="sobre-6">
+        <div class="sobre-seal">A</div>
+        <div class="sobre-icon"><svg class="sobre-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg></div>
+        <div class="sobre-title">...quieras celebrar algo</div>
+        <div class="sobre-content">¡Bien! Celebralo. Mereces cada cosa buena que te pase (y también las malas, porque
+          después nos reímos). Contame todo, quiero escucharte cuando estás feliz también. Te mereces todos los buenos
+          momentos… y a mí jodiéndote en el medio.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <!-- MEDIDOR DE EXTRAÑITIS -->
+  <section class="extrañitis-section">
+    <span class="eyebrow">Latidos a distancia</span>
+    <h2
+      style="font-family:'Cinzel Decorative',serif;font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--gold-soft);text-align:center;margin-bottom:0.5rem;">
+      Extrañitis</h2>
+    <p
+      style="text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted);font-size:1.1rem;margin-bottom:1rem;">
+      Tocá el corazón cuando me extrañes</p>
+    <button class="extrañitis-btn" id="extrañitis-btn" aria-label="Te extraño">
+      <div class="extrañitis-particles" id="particles-container"></div>
+      <span class="extrañitis-heart" id="extrañitis-heart">🩷</span>
+      <span class="extrañitis-label">Te extraño</span>
+    </button>
+    <div class="extrañitis-counter" id="extrañitis-counter"></div>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,2C8,2 4,5 4,9C4,12.5 7,15.5 12,22C17,15.5 20,12.5 20,9C20,5 16,2 12,2Z" opacity="0.1" />
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <!-- CONTRATO DE ALMAS -->
+  <section class="contract-section">
+    <span class="eyebrow">Términos y Condiciones</span>
+    <h2
+      style="font-family:'Cinzel Decorative',serif;font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--gold-soft);text-align:center;margin-bottom:0.5rem;">
+      Contrato de Almas</h2>
+    <p
+      style="text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted);font-size:1.1rem;">
+      Firmado con sangre digital (y un poco de lag).</p>
+
+    <div class="contract-scroll reveal-on-scroll">
+      <div class="contract-title">Pacto de Unión Eterna</div>
+
+      <div class="contract-clause">
+        <span class="contract-clause-num">I.</span>
+        <span>Si algún día hay apocalipsis zombi y te muerden, te prometo una muerte rápida y limpia.
+          No por crueldad… sino porque te quiero demasiado como para dejarte convertir.</span>
+      </div>
+      <div class="contract-clause">
+        <span class="contract-clause-num">II.</span>
+        <span>El que termine con el K/D más bajo en la partida tiene que bancarse los elogios del otro sin quejarse.
+          Aunque duela el orgullo.</span>
+      </div>
+      <div class="contract-clause">
+        <span class="contract-clause-num">III.</span>
+        <span>Queda prohibido decir “había lag” cuando claramente fue skill issue.
+          La verdad duele, pero duele menos que mentir.</span>
+      </div>
+      <div class="contract-clause">
+        <span class="contract-clause-num">IV.</span>
+        <span>No importa la distancia, el huso horario ni el ping del servidor:
+          prometo no soltarte la mano.
+          Ni siquiera si estamos los dos en el infierno.</span>
+      </div>
+
+      <div class="contract-signatures">
+        <div class="contract-sign-box">
+          <div class="contract-sign-line"></div>
+          <span
+            style="font-family:'Jost',sans-serif;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(107, 29, 46, 0.8)">Firma
+            de Alis</span>
+        </div>
+        <div class="contract-sign-box">
+          <div class="contract-sign-line"
+            style="font-family:'Cinzel Decorative',serif;font-size:1.4rem;line-height:0.8;color:#111;">Agus</div>
+          <span
+            style="font-family:'Jost',sans-serif;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(107, 29, 46, 0.8)">Firma
+            del Remitente</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24">
+      <path d="M12,5C10.5,5 9,6 9,7.5C9,9 12,11 12,11C12,11 15,9 15,7.5C15,6 13.5,5 12,5Z" />
+      <path
+        d="M12,11C10,11 7,9 7,7.5C7,5.5 8.5,4 10.5,4C11.5,4 12,4.5 12,4.5C12,4.5 12.5,4 13.5,4C15.5,4 17,5.5 17,7.5C17,9 14,11 12,11Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" />
+      <path d="M12,11L12,22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M12,14L14,13M12,18L10,17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <!-- LOGROS COOPERATIVOS -->
+  <section class="achievements-section">
+    <span class="eyebrow">Progreso de la Partida</span>
+    <h2
+      style="font-family:'Cinzel Decorative',serif;font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--gold-soft);text-align:center;margin-bottom:0.5rem;">
+      Logros Desbloqueados</h2>
+
+    <div class="achievements-grid">
+      <div class="achievement-card unlocked reveal-on-scroll">
+        <div class="achievement-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+          </svg>
+        </div>
+        <div class="achievement-info">
+          <h3>Sobrevivientes de la Distancia</h3>
+          <p>Mantener vivo el romance a 9,000 kilómetros de distancia.</p>
+        </div>
+      </div>
+
+      <div class="achievement-card unlocked reveal-on-scroll">
+        <div class="achievement-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
+        </div>
+        <div class="achievement-info">
+          <h3>Carry del Amor</h3>
+          <p>Aguantar las jodas de tu duo durante al menos 48hs.</p>
+        </div>
+      </div>
+
+      <div class="achievement-card reveal-on-scroll">
+        <div class="achievement-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+        <div class="achievement-info">
+          <h3>[BLOQUEADO] Encuentro Físico</h3>
+          <p>Superar el ping, los vuelos y abrazarse en la vida real.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+
+    <!-- LINK A JUEGOS -->
+    <section class="games-link-section">
+      <span class="eyebrow">Para cuando estamos juntos</span>
+      <h2
+        style="font-family:'Cinzel Decorative',serif;font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--gold-soft);text-align:center;margin-bottom:0.5rem;">
+        Nuestros Juegos</h2>
+      <p
+        style="text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted);font-size:1.1rem;">
+        Ruletas, cartas y más cosas para hacer juntos en videollamada</p>
+      <a href="juegos.html" class="games-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+            opacity="0" />
+          <path
+            d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5S14.67 12 15.5 12s1.5.67 1.5 1.5S16.33 15 15.5 15zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5S19.33 12 18.5 12z" />
+        </svg>
+        Ir a los juegos
+      </a>
+    </section>
+
+    <footer>
+      hecho con <span class="heart">♥</span> desde Buenos Aires
+    </footer>
+
+    <!-- JODÍ COUNTER -->
+    <div class="jodi-float">
+      <div class="jodi-toast" id="jodi-toast"></div>
+      <button class="jodi-btn" id="jodi-btn" aria-label="Me jodió">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+          <path d="M8 14s1.5 2 4 2 4-2 4-2" stroke-linecap="round" />
+          <path d="M15 9l-1.5 1.5M9 9l1.5 1.5" stroke-linecap="round" />
+        </svg>
+        <span class="jodi-badge" id="jodi-badge">0</span>
+      </button>
+    </div>
+
+
+    <script>
+      // --- Configuración de fechas ---
+      const TOGETHER_SINCE = new Date("2026-08-12T02:00:00-03:00");
+
+      function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
+
+      function tick() {
+        const now = new Date();
+
+        let together = (now - TOGETHER_SINCE) / 1000;
+        if (together < 0) together = 0;
+        const td = Math.floor(together / 86400); together -= td * 86400;
+        const th = Math.floor(together / 3600); together -= th * 3600;
+        const tm = Math.floor(together / 60); together -= tm * 60;
+        const ts = Math.floor(together);
+        document.getElementById('ct-days').textContent = td;
+        document.getElementById('ct-hours').textContent = pad(th);
+        document.getElementById('ct-mins').textContent = pad(tm);
+        document.getElementById('ct-secs').textContent = pad(ts);
+      }
+
+      tick();
+      setInterval(tick, 1000);
+
+      // --- Moon Phase Calculation ---
+      function getMoonPhase() {
+        const date = new Date();
+        const lunarCycle = 29.53058867;
+        const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14, 0)).getTime();
+        const diff = date.getTime() - knownNewMoon;
+        const days = diff / (1000 * 60 * 60 * 24);
+        const phase = (days % lunarCycle) / lunarCycle;
+        const index = Math.floor(phase * 8 + 0.5) % 8;
+
+        const moons = [
+          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10" fill="var(--bg-soft)"/></svg>', // 0: Nueva
+          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 0 0 0 20 10 10 0 0 1 0-20z" fill="var(--silver)" opacity="0.3"/></svg>', // 1: Creciente
+          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 0 0 0 20V2z" fill="var(--silver)"/></svg>', // 2: Cuarto Creciente
+          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 0 0 0 20 10 10 0 0 1 0-20z" fill="var(--silver)"/><circle cx="12" cy="12" r="10" fill="var(--silver)" opacity="0.7"/></svg>', // 3: Gibosa Creciente
+          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10" fill="var(--silver)"/></svg>', // 4: Llena
+          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 0 1 0 20 10 10 0 0 0 0-20z" fill="var(--silver)"/><circle cx="12" cy="12" r="10" fill="var(--silver)" opacity="0.7"/></svg>', // 5: Gibosa Menguante
+          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 0 1 0 20V2z" fill="var(--silver)"/></svg>', // 6: Cuarto Menguante
+          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 0 1 0 20 10 10 0 0 0 0-20z" fill="var(--silver)" opacity="0.3"/></svg>'  // 7: Menguante
+        ];
+        return moons[index];
+      }
+      document.getElementById('moon-icon').innerHTML = getMoonPhase();
+
+      // --- Letter Wax Seal ---
+      const seal = document.getElementById('wax-seal');
+      const letter = document.getElementById('the-letter');
+
+      if (seal && letter) {
+        seal.addEventListener('click', () => {
+          seal.classList.add('broken');
+          letter.classList.add('opened');
+        });
+      }
+
+      // --- Scroll Reveal ---
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('revealed');
+            }, index * 150); // Stagger effect
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+        observer.observe(el);
+      });
+
+      // --- Sobres ábrelo cuando ---
+      document.querySelectorAll('.sobre').forEach(sobre => {
+        sobre.addEventListener('click', () => {
+          if (sobre.classList.contains('abierto')) return;
+          sobre.classList.add('abierto');
+          const content = sobre.querySelector('.sobre-content');
+          if (content) {
+            content.style.display = 'block';
+            requestAnimationFrame(() => {
+              content.style.opacity = '1';
+              content.style.transform = 'translateY(0)';
+            });
+          }
+        });
+      });
+
+      // --- Extrañitis Button ---
+      const extraBtn = document.getElementById('extrañitis-btn');
+      const extraHeart = document.getElementById('extrañitis-heart');
+      const extraCounter = document.getElementById('extrañitis-counter');
+      const particlesContainer = document.getElementById('particles-container');
+      let missCount = parseInt(localStorage.getItem('extrañitis_count') || '0');
+
+      const messages = [
+        'Ya van {n} veces que me extrañás 🩷',
+        'Acumulamos {n} extrañanzas 🩷',
+        '{n} corazones volaron hasta acá 🩷',
+        'Me extrañaste {n} veces. Yo igual. 🩷',
+      ];
+
+      function updateCounter() {
+        if (missCount === 0) { extraCounter.textContent = ''; return; }
+        const msg = messages[Math.floor(Math.random() * messages.length)];
+        extraCounter.textContent = msg.replace('{n}', missCount);
+      }
+
+      function spawnParticle() {
+        const p = document.createElement('span');
+        p.className = 'particle-heart';
+        const svgs = [
+          '<svg viewBox="0 0 24 24" width="100%" height="100%" fill="#8b2942"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+          '<svg viewBox="0 0 24 24" width="100%" height="100%" fill="#5c1a2a"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+          '<svg viewBox="0 0 24 24" width="100%" height="100%" fill="#b8a07a"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+        ];
+        p.innerHTML = svgs[Math.floor(Math.random() * svgs.length)];
+        p.style.left = (20 + Math.random() * 60) + '%';
+        p.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+        p.style.width = (15 + Math.random() * 15) + 'px';
+        p.style.height = p.style.width;
+        particlesContainer.appendChild(p);
+        p.addEventListener('animationend', () => p.remove());
+      }
+
+      updateCounter();
+
+      extraBtn.addEventListener('click', () => {
+        missCount++;
+        localStorage.setItem('extrañitis_count', missCount);
+        updateCounter();
+        // Burst animation
+        extraHeart.style.animation = 'none';
+        extraHeart.style.transform = 'scale(1.4)';
+        extraHeart.style.filter = 'drop-shadow(0 0 35px rgba(255,100,150,0.9))';
+        for (let i = 0; i < 6; i++) {
+          setTimeout(() => spawnParticle(), i * 80);
+        }
+        setTimeout(() => {
+          extraHeart.style.transform = '';
+          extraHeart.style.filter = '';
+          extraHeart.style.animation = 'heartbeat 2.5s ease-in-out infinite';
+        }, 400);
+      });
+
+      // --- Petals Canvas (if reduced motion is not checked) ---
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (!prefersReducedMotion.matches) {
+        const canvas = document.getElementById('petals-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function resize() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        const petals = [];
+        const maxPetals = 15;
+
+        class Petal {
+          constructor() {
+            this.reset();
+            this.y = Math.random() * height; // Distribute initially
+          }
+
+          reset() {
+            this.x = Math.random() * width;
+            this.y = -20;
+            this.size = Math.random() * 10 + 5;
+            this.speedY = Math.random() * 1 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 1;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 2;
+            this.opacity = Math.random() * 0.5 + 0.2;
+          }
+
+          update() {
+            this.y += this.speedY;
+            this.x += this.speedX;
+            this.rotation += this.rotationSpeed;
+
+            // Wavering motion
+            this.x += Math.sin(this.y * 0.02) * 0.5;
+
+            if (this.y > height + 20) {
+              this.reset();
+            }
+          }
+
+          draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+
+            ctx.globalAlpha = this.opacity;
+            ctx.fillStyle = '#6b1d2e'; // Blood red
+
+            // Draw a simple petal shape
+            ctx.beginPath();
+            ctx.moveTo(0, -this.size);
+            ctx.bezierCurveTo(this.size, -this.size, this.size, this.size, 0, this.size);
+            ctx.bezierCurveTo(-this.size, this.size, -this.size, -this.size, 0, -this.size);
+            ctx.fill();
+
+            ctx.restore();
+          }
+        }
+
+        for (let i = 0; i < maxPetals; i++) {
+          petals.push(new Petal());
+        }
+
+        function animatePetals() {
+          ctx.clearRect(0, 0, width, height);
+
+          petals.forEach(petal => {
+            petal.update();
+            petal.draw();
+          });
+
+          requestAnimationFrame(animatePetals);
+        }
+
+        animatePetals();
+      }
+
+      // --- Jodí Counter ---
+      const jodiBtn = document.getElementById('jodi-btn');
+      const jodiBadge = document.getElementById('jodi-badge');
+      const jodiToast = document.getElementById('jodi-toast');
+      let jodiCount = parseInt(localStorage.getItem('jodi_count') || '0');
+      let jodiLastDate = localStorage.getItem('jodi_date') || '';
+      const today = new Date().toDateString();
+      if (jodiLastDate !== today) { jodiCount = 0; localStorage.setItem('jodi_date', today); }
+      jodiBadge.textContent = jodiCount;
+
+      const jodiFrases = [
+        'Otra más… y todavía te gusto. Sos irrecuperable.',
+        'Sumaste otra jodida. Impresionante tu constancia.',
+        'Dejá de joder… mentira, seguí.',
+        'Me vas a volver loca (más de lo que ya estoy).',
+        'Ya superaste tu récord diario de molestarme.',
+        '¿No te cansás? Ah cierto, no.',
+        'Si me jodés una vez más, te quiero el doble.',
+        'Esto cuenta como acoso tierno.',
+        'El diablo tiene un favorito y sos vos.',
+        'Acumulando méritos para el infierno, ¿no?',
+        'Ni un exorcismo me saca las ganas de hablarte.',
+        'Llegaste al nivel "insoportable adorable".',
+        'Mi paciencia murió. Pero mi amor no.',
+      ];
+
+      let jodiToastTimeout;
+      jodiBtn.addEventListener('click', () => {
+        jodiCount++;
+        localStorage.setItem('jodi_count', jodiCount);
+        jodiBadge.textContent = jodiCount;
+        const frase = jodiFrases[Math.floor(Math.random() * jodiFrases.length)];
+        jodiToast.textContent = frase;
+        jodiToast.classList.add('show');
+        clearTimeout(jodiToastTimeout);
+        jodiToastTimeout = setTimeout(() => jodiToast.classList.remove('show'), 3000);
+        jodiBtn.style.transform = 'scale(1.2)';
+        setTimeout(() => jodiBtn.style.transform = '', 200);
+      });
+
+
+
+    </script>
+  </div>
+
+</body>
+
+</html>
+
+</html>
