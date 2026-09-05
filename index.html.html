@@ -308,6 +308,175 @@
       text-shadow: 0 0 15px rgba(107, 29, 46, 0.4);
     }
 
+    /* ---------- 21 de Septiembre Button ---------- */
+    .sep21-wrapper {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      padding: 2.5rem 1.5rem 0;
+    }
+
+    .sep21-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      background: linear-gradient(135deg, #6b1d2e 0%, #3a0d18 50%, #8b2942 100%);
+      border: 2px solid rgba(184, 160, 122, 0.5);
+      color: var(--cream);
+      padding: 1.2rem 2.8rem;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 6px;
+      box-shadow:
+        0 0 30px rgba(139, 41, 66, 0.4),
+        0 0 60px rgba(139, 41, 66, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      transition: all 0.4s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: sep21-pulse 3s ease-in-out infinite;
+    }
+
+    .sep21-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(184,160,122,0.15), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .sep21-btn:hover::before { opacity: 1; }
+
+    .sep21-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow:
+        0 0 50px rgba(139, 41, 66, 0.6),
+        0 0 100px rgba(139, 41, 66, 0.3),
+        0 12px 30px rgba(0,0,0,0.6);
+      border-color: var(--gold-soft);
+    }
+
+    @keyframes sep21-pulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(139, 41, 66, 0.4), 0 0 60px rgba(139, 41, 66, 0.2), inset 0 1px 0 rgba(255,255,255,0.08); }
+      50% { box-shadow: 0 0 50px rgba(139, 41, 66, 0.6), 0 0 90px rgba(139, 41, 66, 0.35), inset 0 1px 0 rgba(255,255,255,0.08); }
+    }
+
+    .sep21-icon {
+      font-size: 1.4em;
+      animation: sep21-spin 4s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes sep21-spin {
+      0%, 80%, 100% { transform: rotate(0deg); }
+      90% { transform: rotate(15deg); }
+      95% { transform: rotate(-10deg); }
+    }
+
+    /* ---------- Video Favorites & Pagination ---------- */
+    .video-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 350px;
+      position: relative;
+    }
+
+    .video-fav-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 5;
+      background: rgba(10,10,14,0.8);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .video-fav-btn:hover {
+      transform: scale(1.15);
+      border-color: var(--rose-bright);
+      background: rgba(139,41,66,0.3);
+    }
+
+    .video-fav-btn.active {
+      border-color: var(--gold);
+      background: rgba(138,115,85,0.2);
+    }
+
+    .video-fav-badge {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      z-index: 5;
+      background: linear-gradient(135deg, var(--gold), #c9a96e);
+      color: #0a0a0e;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      display: none;
+    }
+
+    .video-fav-badge.show { display: block; }
+
+    .video-load-more-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.5rem;
+    }
+
+    .video-load-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--cream);
+      padding: 0.9rem 2.5rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .video-load-more-btn:hover {
+      border-color: var(--rose-bright);
+      background: rgba(107,29,46,0.15);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(107,29,46,0.3);
+      transform: translateY(-2px);
+    }
+
+    .video-load-more-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
     .moon-phase {
       margin-top: 1.5rem;
       font-family: 'Cormorant Garamond', serif;
@@ -1531,279 +1700,25 @@
     </svg>
   </div>
 
+  <!-- 21 DE SEPTIEMBRE BUTTON -->
+  <div class="sep21-wrapper">
+    <a href="https://floresparamimorocha.vercel.app" target="_blank" rel="noopener noreferrer" class="sep21-btn" id="sep21-btn">
+      <span class="sep21-icon">🌹</span>
+      Feliz 21 de septiembre morochita
+      <span class="sep21-icon">🌹</span>
+    </a>
+  </div>
+
   <section class="memories-cta">
     <span class="eyebrow">Memorias en construcción</span>
-    <div class="video-grid reveal-on-scroll"
-      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem 1.5rem; margin-top: 1.5rem; justify-items: center;">
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/WhatsApp Video 2026-08-16 at 21.31.53.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/WhatsApp Video 2026-08-16 at 22.06.26.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/WhatsApp Video 2026-08-16 at 23.36.14.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/WhatsApp Video 2026-08-18 at 14.09.21.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/WhatsApp Video 2026-08-18 at 15.10.13.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/WhatsApp Video 2026-08-18 at 16.01.46.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/WhatsApp Video 2026-08-19 at 13.49.08.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/WhatsApp Video 2026-08-19 at 16.39.51.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/0830 (3).mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba10.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba12.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba13.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba15.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba20.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba21.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba23.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba24.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba25.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba26.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba27.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba28.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba29.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba30.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem; width: 100%; max-width: 350px;">
-        <video
-          style="width: 100%; border-radius: 8px; border: 1px solid var(--line); box-shadow: 0 5px 15px rgba(0,0,0,0.5);"
-          controls>
-          <source src="videos/prueba31.mp4" type="video/mp4">
-        </video>
-        <span
-          style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold-soft); font-size: 1.15rem; text-align: center;">de
-          parte de tu fan #1</span>
-      </div>
-
+    <div id="video-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem 1.5rem; margin-top: 1.5rem; justify-items: center;">
+      <!-- JS rendered -->
+    </div>
+    <div class="video-load-more-wrapper">
+      <button class="video-load-more-btn" id="video-load-more" style="display:none;">Ver m&#225;s &#8595;</button>
     </div>
     <div class="cta-card reveal-on-scroll">
-      <p>Este espacio está reservado para todo lo que vayamos sumando.</p>
+      <p>Este espacio est&#225; reservado para todo lo que vayamos sumando.</p>
       <a href="https://wa.me/5492914425849?text=mandame%20fotos%2C%20que%20tu%20sabe%20que%20me%20gusta" target="_blank"
         rel="noopener noreferrer" class="wsp-button">
         Agregar recuerdos
@@ -2123,8 +2038,140 @@
 
 
     <script>
+      // --- Video Gallery: Favorites + Pagination ---
+      (function() {
+        const ALL_VIDEOS = [
+          'videos/WhatsApp Video 2026-08-16 at 21.31.53.mp4',
+          'videos/WhatsApp Video 2026-08-16 at 22.06.26.mp4',
+          'videos/WhatsApp Video 2026-08-16 at 23.36.14.mp4',
+          'videos/WhatsApp Video 2026-08-18 at 14.09.21.mp4',
+          'videos/WhatsApp Video 2026-08-18 at 15.10.13.mp4',
+          'videos/WhatsApp Video 2026-08-18 at 16.01.46.mp4',
+          'videos/WhatsApp Video 2026-08-19 at 13.49.08.mp4',
+          'videos/WhatsApp Video 2026-08-19 at 16.39.51.mp4',
+          'videos/0830 (3).mp4',
+          'videos/prueba10.mp4',
+          'videos/prueba12.mp4',
+          'videos/prueba13.mp4',
+          'videos/prueba15.mp4',
+          'videos/prueba20.mp4',
+          'videos/prueba21.mp4',
+          'videos/prueba23.mp4',
+          'videos/prueba24.mp4',
+          'videos/prueba25.mp4',
+          'videos/prueba26.mp4',
+          'videos/prueba27.mp4',
+          'videos/prueba28.mp4',
+          'videos/prueba29.mp4',
+          'videos/prueba30.mp4',
+          'videos/prueba31.mp4',
+          'videos/prueba32.mp4',
+          'videos/prueba33.mp4',
+          'videos/prueba35.mp4',
+          'videos/prueba36.mp4',
+          'videos/prueba37.mp4',
+        ];
+        const PAGE_SIZE = 6;
+        const FAV_KEY = 'video_favorites';
+        let shown = 0;
+
+        function getFavs() {
+          try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); }
+          catch(e) { return []; }
+        }
+        function setFavs(favs) {
+          localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+        }
+        function toggleFav(src) {
+          let favs = getFavs();
+          const i = favs.indexOf(src);
+          if (i === -1) favs.push(src); else favs.splice(i, 1);
+          setFavs(favs);
+        }
+        function getSortedVideos() {
+          const favs = getFavs();
+          const favSet = new Set(favs);
+          const faved = ALL_VIDEOS.filter(v => favSet.has(v));
+          const rest  = ALL_VIDEOS.filter(v => !favSet.has(v));
+          return [...faved, ...rest];
+        }
+
+        function buildCard(src, isFav) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'video-card';
+
+          const badge = document.createElement('span');
+          badge.className = 'video-fav-badge' + (isFav ? ' show' : '');
+          badge.textContent = '★ Favorito';
+          wrapper.appendChild(badge);
+
+          const favBtn = document.createElement('button');
+          favBtn.className = 'video-fav-btn' + (isFav ? ' active' : '');
+          favBtn.title = isFav ? 'Quitar de favoritos' : 'Agregar a favoritos';
+          favBtn.innerHTML = isFav ? '⭐' : '☆';
+          favBtn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
+          favBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleFav(src);
+            renderAll();
+          });
+          wrapper.appendChild(favBtn);
+
+          const video = document.createElement('video');
+          video.style.cssText = 'width:100%;border-radius:8px;border:1px solid var(--line);box-shadow:0 5px 15px rgba(0,0,0,0.5);';
+          video.controls = true;
+          const source = document.createElement('source');
+          source.src = src;
+          source.type = 'video/mp4';
+          video.appendChild(source);
+          wrapper.appendChild(video);
+
+          const label = document.createElement('span');
+          label.style.cssText = "font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-soft);font-size:1.15rem;text-align:center;";
+          label.textContent = 'de parte de tu fan #1';
+          wrapper.appendChild(label);
+
+          return wrapper;
+        }
+
+        function renderAll() {
+          const grid = document.getElementById('video-grid');
+          const btn  = document.getElementById('video-load-more');
+          if (!grid || !btn) return;
+
+          const sorted = getSortedVideos();
+          const favSet = new Set(getFavs());
+
+          // Re-render from scratch so order (favorites first) is respected
+          grid.innerHTML = '';
+          shown = Math.min(shown || PAGE_SIZE, sorted.length);
+          for (let i = 0; i < shown; i++) {
+            grid.appendChild(buildCard(sorted[i], favSet.has(sorted[i])));
+          }
+
+          // Show/hide button
+          if (shown < sorted.length) {
+            btn.style.display = 'inline-flex';
+            btn.disabled = false;
+          } else {
+            btn.style.display = 'none';
+          }
+        }
+
+        // Initial render
+        shown = PAGE_SIZE;
+        renderAll();
+
+        document.getElementById('video-load-more').addEventListener('click', function() {
+          shown = Math.min(shown + PAGE_SIZE, getSortedVideos().length);
+          renderAll();
+          if (shown >= getSortedVideos().length) this.style.display = 'none';
+        });
+      })();
+
       // --- Configuración de fechas ---
       const TOGETHER_SINCE = new Date("2026-08-12T02:00:00-03:00");
+
 
       function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
 
