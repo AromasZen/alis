@@ -1701,7 +1701,7 @@
   </div>
 
   <!-- 21 DE SEPTIEMBRE BUTTON -->
-  <div class="sep21-wrapper">
+  <div class="sep21-wrapper" id="sep21-wrapper" style="display:none;">
     <a href="https://floresparamimorocha.vercel.app" target="_blank" rel="noopener noreferrer" class="sep21-btn" id="sep21-btn">
       <span class="sep21-icon">🌹</span>
       Feliz 21 de septiembre morochita
@@ -2167,6 +2167,15 @@
           renderAll();
           if (shown >= getSortedVideos().length) this.style.display = 'none';
         });
+      })();
+
+      // --- Mostrar botón 21 de septiembre solo a partir del 21/9/2026 ---
+      (function() {
+        const SEP21 = new Date('2026-09-21T00:00:00-03:00');
+        const wrapper = document.getElementById('sep21-wrapper');
+        if (wrapper && new Date() >= SEP21) {
+          wrapper.style.display = 'flex';
+        }
       })();
 
       // --- Configuración de fechas ---
