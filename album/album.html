@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our First Chapter</title>
+  <meta name="description" content="Un álbum digital de nuestro primer mes juntos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="ambient-bg">
+    <div class="ambient-glow ambient-glow--1"></div>
+    <div class="ambient-glow ambient-glow--2"></div>
+    <div class="grain-overlay"></div>
+  </div>
+
+  <button id="musicToggle" class="music-toggle" aria-label="Activar música de fondo" title="Música">
+    <span class="music-icon music-icon--off">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+        <line x1="23" y1="9" x2="17" y2="15"/>
+        <line x1="17" y1="9" x2="23" y2="15"/>
+      </svg>
+    </span>
+    <span class="music-icon music-icon--on" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      </svg>
+    </span>
+  </button>
+
+  <div id="pageIndicator" class="page-indicator" aria-live="polite" style="display:none">
+    <span id="currentPageNum">1</span>
+    <span class="indicator-sep">&#183;</span>
+    <span id="totalPageNum">1</span>
+  </div>
+
+  <main class="scene" id="scene">
+    <div class="book-wrapper" id="bookWrapper">
+      <div class="book-floor-shadow"></div>
+      <div class="book" id="book">
+
+        <div class="book__spine">
+          <span class="spine-text">Our First Chapter</span>
+        </div>
+
+        <div class="book__side book__side--left" id="leftSide">
+          <div class="page-inner" id="leftPageInner"></div>
+          <div class="page-inner-shadow page-inner-shadow--left"></div>
+        </div>
+
+        <div class="book__side book__side--right" id="rightSide">
+          <div class="page-inner" id="rightPageInner"></div>
+          <div class="page-inner-shadow page-inner-shadow--right"></div>
+        </div>
+
+        <div class="turning-pages" id="turningPages">
+          <div class="turning-page" id="turningPage">
+            <div class="turning-page__front page-inner" id="turningFront"></div>
+            <div class="turning-page__back  page-inner" id="turningBack"></div>
+          </div>
+        </div>
+
+        <div class="book__cover book__cover--front" id="bookCoverFront">
+          <div class="cover-inner">
+            <div class="cover-frame"></div>
+            <div class="cover-ornament cover-ornament--top"></div>
+            <div class="cover-content">
+              <!-- EDIT: date -->
+              <p class="cover-date">&#8212; Agosto, 2026 &#8212;</p>
+              <div class="cover-title-block">
+                <h1 class="cover-title">Our First<br/>Chapter</h1>
+                <div class="cover-rule"></div>
+                <!-- EDIT: subtitle -->
+                <p class="cover-subtitle">One month with you</p>
+              </div>
+              <div class="cover-hint">
+                <span>Open</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </div>
+            </div>
+            <div class="cover-ornament cover-ornament--bottom"></div>
+            <div class="cover-grain"></div>
+          </div>
+        </div>
+
+        <div class="book__cover book__cover--back">
+          <div class="cover-back-inner">
+            <!-- EDIT: back cover quote -->
+            <p class="back-cover-quote">&#8220;Some stories begin<br/>with a single moment<br/>that changes everything.&#8221;</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <nav class="nav-arrows" aria-label="Navegacion del album">
+    <button id="prevBtn" class="nav-btn nav-btn--prev" aria-label="Pagina anterior" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+    </button>
+    <button id="nextBtn" class="nav-btn nav-btn--next" aria-label="Pagina siguiente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </nav>
+
+  <audio id="backgroundMusic" loop>
+    <source src="assets/music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- ============================================================
+       PAGES DATA
+       Edit content here. Each data-page element = one book page.
+       Pages pair up: odd pages go RIGHT, even pages go LEFT.
+  ============================================================ -->
+  <div id="pagesData" style="display:none">
+
+    <!-- Page 1: Chapter I opener (right page of spread 1) -->
+    <div data-page="1" data-type="chapter">
+      <div class="chapter-page">
+        <div class="chapter-num">I</div>
+        <div class="chapter-rule"></div>
+        <!-- EDIT: chapter title -->
+        <h2 class="chapter-title">The Beginning</h2>
+        <!-- EDIT: chapter quote -->
+        <p class="chapter-quote">&#8220;Every great story starts<br/>with a single, unexpected moment.&#8221;</p>
+        <div class="chapter-rule"></div>
+        <p class="chapter-label">Chapter One</p>
+      </div>
+    </div>
+
+    <!-- Page 2: The Beginning (left) -->
+    <div data-page="2" data-type="text">
+      <div class="text-page">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <!-- EDIT: page header -->
+          <span class="page-header-label">The beginning</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <!-- EDIT: photo path -->
+        <div class="photo-frame photo-frame--portrait">
+          <img src="assets/photo1.jpg" alt="Primera foto" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+          <div class="photo-placeholder-label">photo1.jpg</div>
+        </div>
+        <div class="text-block">
+          <!-- EDIT: text -->
+          <p class="drop-cap">Escribe aqui tu texto personal sobre el comienzo. Como fue ese primer momento, esa primera vez que hablaron o se vieron. Puede ser tan largo o tan corto como quieras.</p>
+          <p>Puedes continuar aqui con mas detalles, recuerdos, o simplemente palabras que describan ese comienzo especial.</p>
+        </div>
+        <div class="page-footer"><span class="page-num-label">01</span></div>
+      </div>
+    </div>
+
+    <!-- Page 3: Our First Moments collage (right) -->
+    <div data-page="3" data-type="collage">
+      <div class="collage-page">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">Our first moments</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <div class="collage-grid collage-grid--3">
+          <!-- EDIT: photo paths -->
+          <div class="photo-frame">
+            <img src="assets/photo2.jpg" alt="Momento 1" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+            <div class="photo-placeholder-label">photo2.jpg</div>
+          </div>
+          <div class="photo-frame">
+            <img src="assets/photo3.jpg" alt="Momento 2" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+            <div class="photo-placeholder-label">photo3.jpg</div>
+          </div>
+          <div class="photo-frame">
+            <img src="assets/photo4.jpg" alt="Momento 3" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+            <div class="photo-placeholder-label">photo4.jpg</div>
+          </div>
+        </div>
+        <!-- EDIT: caption -->
+        <p class="collage-caption">Pequenos instantes que ya son parte de nosotros.</p>
+        <div class="page-footer"><span class="page-num-label">02</span></div>
+      </div>
+    </div>
+
+    <!-- Page 4: Interlude verse (left) -->
+    <div data-page="4" data-type="verse">
+      <div class="verse-page">
+        <!-- EDIT: interlude quote -->
+        <blockquote class="interlude-quote">
+          &#8220;Little by little,<br/>day by day,<br/>something shifted.&#8221;
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- Page 5: Chapter II opener (right) -->
+    <div data-page="5" data-type="chapter">
+      <div class="chapter-page">
+        <div class="chapter-num">II</div>
+        <div class="chapter-rule"></div>
+        <h2 class="chapter-title">Getting Closer</h2>
+        <p class="chapter-quote">&#8220;Distance becomes irrelevant when someone<br/>occupies your thoughts.&#8221;</p>
+        <div class="chapter-rule"></div>
+        <p class="chapter-label">Chapter Two</p>
+      </div>
+    </div>
+
+    <!-- Page 6: Somehow... (left) -->
+    <div data-page="6" data-type="text">
+      <div class="text-page">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">Somehow...</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <div class="photo-frame photo-frame--wide">
+          <img src="assets/photo5.jpg" alt="Somehow" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+          <div class="photo-placeholder-label">photo5.jpg</div>
+        </div>
+        <div class="text-block">
+          <!-- EDIT: text -->
+          <p class="drop-cap">Escribe aqui sobre como fueron acercandose. Esos mensajes de madrugada, esas conversaciones que no tenian hora de fin.</p>
+          <p>Ese momento en que te diste cuenta de que algo estaba cambiando.</p>
+        </div>
+        <div class="page-footer"><span class="page-num-label">03</span></div>
+      </div>
+    </div>
+
+    <!-- Page 7: The Little Things (right) -->
+    <div data-page="7" data-type="text">
+      <div class="text-page text-page--details">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">The little things</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <!-- EDIT: small memories list — add or remove li items freely -->
+        <ul class="details-list">
+          <li class="detail-item"><span class="detail-dot">&#183;</span><span>Detalle o recuerdo pequeno numero 1</span></li>
+          <li class="detail-item"><span class="detail-dot">&#183;</span><span>Detalle o recuerdo pequeno numero 2</span></li>
+          <li class="detail-item"><span class="detail-dot">&#183;</span><span>Detalle o recuerdo pequeno numero 3</span></li>
+          <li class="detail-item"><span class="detail-dot">&#183;</span><span>Detalle o recuerdo pequeno numero 4</span></li>
+          <li class="detail-item"><span class="detail-dot">&#183;</span><span>Detalle o recuerdo pequeno numero 5</span></li>
+          <li class="detail-item"><span class="detail-dot">&#183;</span><span>Detalle o recuerdo pequeno numero 6</span></li>
+          <li class="detail-item"><span class="detail-dot">&#183;</span><span>Detalle o recuerdo pequeno numero 7</span></li>
+          <li class="detail-item"><span class="detail-dot">&#183;</span><span>Detalle o recuerdo pequeno numero 8</span></li>
+        </ul>
+        <div class="page-footer"><span class="page-num-label">04</span></div>
+      </div>
+    </div>
+
+    <!-- Page 8: Favorite Memories collage (left) -->
+    <div data-page="8" data-type="collage">
+      <div class="collage-page">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">Favorite memories</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <div class="collage-grid collage-grid--4">
+          <!-- EDIT: 4 photo paths -->
+          <div class="photo-frame">
+            <img src="assets/photo6.jpg" alt="Recuerdo 1" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+            <div class="photo-placeholder-label">photo6.jpg</div>
+          </div>
+          <div class="photo-frame">
+            <img src="assets/photo7.jpg" alt="Recuerdo 2" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+            <div class="photo-placeholder-label">photo7.jpg</div>
+          </div>
+          <div class="photo-frame">
+            <img src="assets/photo8.jpg" alt="Recuerdo 3" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+            <div class="photo-placeholder-label">photo8.jpg</div>
+          </div>
+          <div class="photo-frame">
+            <img src="assets/photo9.jpg" alt="Recuerdo 4" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+            <div class="photo-placeholder-label">photo9.jpg</div>
+          </div>
+        </div>
+        <div class="page-footer"><span class="page-num-label">05</span></div>
+      </div>
+    </div>
+
+    <!-- Page 9: Interlude verse (right) -->
+    <div data-page="9" data-type="verse">
+      <div class="verse-page">
+        <!-- EDIT: interlude quote -->
+        <blockquote class="interlude-quote">
+          &#8220;There&#8217;s a particular kind of magic<br/>in becoming someone&#8217;s favorite<br/>part of the day.&#8221;
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- Page 10: Chapter III opener (left — note: chapter pages can fall either side) -->
+    <div data-page="10" data-type="chapter">
+      <div class="chapter-page">
+        <div class="chapter-num">III</div>
+        <div class="chapter-rule"></div>
+        <h2 class="chapter-title">Us</h2>
+        <p class="chapter-quote">&#8220;Two people, one story<br/>just beginning.&#8221;</p>
+        <div class="chapter-rule"></div>
+        <p class="chapter-label">Chapter Three</p>
+      </div>
+    </div>
+
+    <!-- Page 11: Things I Love About You (right) -->
+    <div data-page="11" data-type="text">
+      <div class="text-page text-page--love">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">Things I love about you</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <!-- EDIT: love list — add or remove li items freely -->
+        <ol class="love-list">
+          <li>La forma en que ries cuando algo te sorprende de verdad.</li>
+          <li>Eso que haces con las manos cuando hablas de algo que te apasiona.</li>
+          <li>Tu manera de ver el mundo, completamente tuya.</li>
+          <li>Que nunca finges ser alguien diferente.</li>
+          <li>Tus mensajes de madrugada.</li>
+          <li>La forma en que dices mi nombre.</li>
+          <li>Como haces que todo parezca mas interesante.</li>
+          <!-- ADD MORE ITEMS HERE -->
+        </ol>
+        <div class="page-footer"><span class="page-num-label">06</span></div>
+      </div>
+    </div>
+
+    <!-- Page 12: Our Little World (left) -->
+    <div data-page="12" data-type="photo">
+      <div class="photo-page">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">Our little world</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <!-- EDIT: hero photo -->
+        <div class="photo-frame photo-frame--hero">
+          <img src="assets/photo10.jpg" alt="Nuestro mundo" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+          <div class="photo-placeholder-label">photo10.jpg</div>
+        </div>
+        <!-- EDIT: caption -->
+        <p class="photo-caption">&#8220;Nuestro pequeno mundo, construido de conversaciones<br/>y momentos que guardamos solo para nosotros.&#8221;</p>
+        <div class="page-footer"><span class="page-num-label">07</span></div>
+      </div>
+    </div>
+
+    <!-- Page 13: Things You Probably Don't Know (right) -->
+    <div data-page="13" data-type="text">
+      <div class="text-page text-page--personal">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">Things you probably don&#8217;t know...</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <div class="text-block text-block--personal">
+          <!-- EDIT: personal text -->
+          <p class="drop-cap">Escribe aqui algo personal que quieras que sepa. Algo que normalmente no se dice, o que quizas todavia no has encontrado el momento de decirle.</p>
+          <p>Puede ser algo tierno, algo divertido, o algo completamente honesto. Este es el espacio para eso.</p>
+          <p>Este album es tu voz cuando las palabras se ponen dificiles de decir en voz alta.</p>
+        </div>
+        <div class="page-footer"><span class="page-num-label">08</span></div>
+      </div>
+    </div>
+
+    <!-- Page 14: Interlude (left) -->
+    <div data-page="14" data-type="verse">
+      <div class="verse-page">
+        <!-- EDIT: interlude quote -->
+        <blockquote class="interlude-quote">
+          &#8220;Thirty-one days.<br/>Thirty-one reasons.&#8221;
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- Page 15: Chapter IV opener (right) -->
+    <div data-page="15" data-type="chapter">
+      <div class="chapter-page">
+        <div class="chapter-num">IV</div>
+        <div class="chapter-rule"></div>
+        <h2 class="chapter-title">One Month</h2>
+        <p class="chapter-quote">&#8220;A month of mornings,<br/>of messages, of smiles, of you.&#8221;</p>
+        <div class="chapter-rule"></div>
+        <p class="chapter-label">Chapter Four</p>
+      </div>
+    </div>
+
+    <!-- Page 16: 31 Days — Left half (days 1-16) -->
+    <div data-page="16" data-type="31days-left">
+      <div class="days-page">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">31 days</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <!-- EDIT: for each day, update data-photo="assets/dayXX.jpg" and the text inside day-text -->
+        <div class="days-grid">
+          <div class="day-cell"><div class="day-num">01</div><div class="day-photo-wrap"><img src="assets/day01.jpg" alt="Dia 1" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">02</div><div class="day-photo-wrap"><img src="assets/day02.jpg" alt="Dia 2" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">03</div><div class="day-photo-wrap"><img src="assets/day03.jpg" alt="Dia 3" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">04</div><div class="day-photo-wrap"><img src="assets/day04.jpg" alt="Dia 4" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">05</div><div class="day-photo-wrap"><img src="assets/day05.jpg" alt="Dia 5" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">06</div><div class="day-photo-wrap"><img src="assets/day06.jpg" alt="Dia 6" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">07</div><div class="day-photo-wrap"><img src="assets/day07.jpg" alt="Dia 7" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">08</div><div class="day-photo-wrap"><img src="assets/day08.jpg" alt="Dia 8" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">09</div><div class="day-photo-wrap"><img src="assets/day09.jpg" alt="Dia 9" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">10</div><div class="day-photo-wrap"><img src="assets/day10.jpg" alt="Dia 10" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">11</div><div class="day-photo-wrap"><img src="assets/day11.jpg" alt="Dia 11" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">12</div><div class="day-photo-wrap"><img src="assets/day12.jpg" alt="Dia 12" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">13</div><div class="day-photo-wrap"><img src="assets/day13.jpg" alt="Dia 13" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">14</div><div class="day-photo-wrap"><img src="assets/day14.jpg" alt="Dia 14" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">15</div><div class="day-photo-wrap"><img src="assets/day15.jpg" alt="Dia 15" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">16</div><div class="day-photo-wrap"><img src="assets/day16.jpg" alt="Dia 16" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+        </div>
+        <div class="page-footer"><span class="page-num-label">09</span></div>
+      </div>
+    </div>
+
+    <!-- Page 17: 31 Days — Right half (days 17-31) -->
+    <div data-page="17" data-type="31days-right">
+      <div class="days-page">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">with you</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <div class="days-grid">
+          <div class="day-cell"><div class="day-num">17</div><div class="day-photo-wrap"><img src="assets/day17.jpg" alt="Dia 17" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">18</div><div class="day-photo-wrap"><img src="assets/day18.jpg" alt="Dia 18" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">19</div><div class="day-photo-wrap"><img src="assets/day19.jpg" alt="Dia 19" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">20</div><div class="day-photo-wrap"><img src="assets/day20.jpg" alt="Dia 20" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">21</div><div class="day-photo-wrap"><img src="assets/day21.jpg" alt="Dia 21" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">22</div><div class="day-photo-wrap"><img src="assets/day22.jpg" alt="Dia 22" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">23</div><div class="day-photo-wrap"><img src="assets/day23.jpg" alt="Dia 23" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">24</div><div class="day-photo-wrap"><img src="assets/day24.jpg" alt="Dia 24" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">25</div><div class="day-photo-wrap"><img src="assets/day25.jpg" alt="Dia 25" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">26</div><div class="day-photo-wrap"><img src="assets/day26.jpg" alt="Dia 26" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">27</div><div class="day-photo-wrap"><img src="assets/day27.jpg" alt="Dia 27" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">28</div><div class="day-photo-wrap"><img src="assets/day28.jpg" alt="Dia 28" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">29</div><div class="day-photo-wrap"><img src="assets/day29.jpg" alt="Dia 29" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">30</div><div class="day-photo-wrap"><img src="assets/day30.jpg" alt="Dia 30" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+          <div class="day-cell"><div class="day-num">31</div><div class="day-photo-wrap"><img src="assets/day31.jpg" alt="Dia 31" onerror="this.parentElement.classList.add('day-no-photo')" /></div><div class="day-text"></div></div>
+        </div>
+        <div class="page-footer"><span class="page-num-label">10</span></div>
+      </div>
+    </div>
+
+    <!-- Page 18: One Month With You — final emotional page (left) -->
+    <div data-page="18" data-type="final">
+      <div class="final-page">
+        <div class="page-header">
+          <span class="page-header-rule"></span>
+          <span class="page-header-label">One month with you</span>
+          <span class="page-header-rule"></span>
+        </div>
+        <!-- EDIT: large emotional photo -->
+        <div class="photo-frame photo-frame--full">
+          <img src="assets/photo11.jpg" alt="Un mes contigo" class="photo" onerror="this.parentElement.classList.add('photo-placeholder')" />
+          <div class="photo-placeholder-label">photo11.jpg</div>
+        </div>
+        <div class="final-text">
+          <!-- EDIT: final emotional text -->
+          <p>Escribe aqui el texto mas emocional del album. Algo que resuma todo lo que sientes despues de este primer mes. Puede ser una carta, puede ser una promesa, puede ser simplemente la verdad.</p>
+        </div>
+        <div class="page-footer"><span class="page-num-label">11</span></div>
+      </div>
+    </div>
+
+    <!-- Page 19: To Be Continued (right — last page) -->
+    <div data-page="19" data-type="end">
+      <div class="end-page">
+        <div class="end-content">
+          <div class="end-ornament"></div>
+          <!-- EDIT: closing phrase -->
+          <h2 class="end-title">To be continued...</h2>
+          <div class="end-rule"></div>
+          <!-- EDIT: closing message -->
+          <p class="end-message">Happy first month &#10084;&#65039;</p>
+          <!-- EDIT: date -->
+          <p class="end-date">&#8212; Agosto 2026 &#8212;</p>
+          <div class="end-ornament end-ornament--bottom"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pagesData -->
+
+  <script src="script.js"></script>
+</body>
+</html>

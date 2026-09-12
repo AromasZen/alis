@@ -1701,7 +1701,7 @@
   </div>
 
   <!-- 21 DE SEPTIEMBRE BUTTON -->
-  <div class="sep21-wrapper" id="sep21-wrapper" style="display:none;">
+  <div class="sep21-wrapper" id="sep21-wrapper" style="display:flex;">
     <a href="https://floresparamimorocha.vercel.app" target="_blank" rel="noopener noreferrer" class="sep21-btn" id="sep21-btn">
       <span class="sep21-icon">🌹</span>
       Feliz 21 de septiembre morochita
@@ -2070,6 +2070,13 @@
           'videos/prueba35.mp4',
           'videos/prueba36.mp4',
           'videos/prueba37.mp4',
+          'videos/prueba39.mp4',
+          'videos/prueba41.mp4',
+          'videos/prueba42.mp4',
+          'videos/prueba43.mp4',
+          'videos/prueba43).mp4',
+          'videos/prueba44.mp4',
+          'videos/prueba45.mp4',
         ];
         const PAGE_SIZE = 6;
         const FAV_KEY = 'video_favorites';
@@ -2171,11 +2178,9 @@
 
       // --- Mostrar botón 21 de septiembre solo a partir del 21/9/2026 ---
       (function() {
-        const SEP21 = new Date('2026-09-21T00:00:00-03:00');
+        // Botón del 21 de septiembre — siempre visible
         const wrapper = document.getElementById('sep21-wrapper');
-        if (wrapper && new Date() >= SEP21) {
-          wrapper.style.display = 'flex';
-        }
+        if (wrapper) wrapper.style.display = 'flex';
       })();
 
       // --- Configuración de fechas ---
