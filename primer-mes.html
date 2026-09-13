@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capítulo I — El Comienzo</title>
+    <meta name="description" content="Nuestro primer mes. Una historia que recién empieza.">
+    <link rel="stylesheet" href="primer-mes.css">
+</head>
+
+<body>
+
+    <!-- Particles Layer -->
+    <div class="particles-layer" id="particles-layer"></div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <!-- Scene Indicator -->
+    <div class="scene-indicator" id="scene-indicator"></div>
+
+    <!-- Back Navigation -->
+    <button class="nav-back" id="nav-back" aria-label="Volver a la escena anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </button>
+
+    <!-- Home Link -->
+    <a href="index.html.html" class="nav-home" aria-label="Volver al inicio">Volver</a>
+
+    <!-- Audio Element (hidden) -->
+    <audio id="audio-element" preload="metadata">
+        <source src="assets/primer-mes/audio-01.ogg" type="audio/ogg">
+        <source src="assets/primer-mes/audio-01.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ESCENA 0 — INTRODUCCIÓN                -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="scene scene-intro" id="scene-0">
+        <div class="ambient-glow warm" style="top: 30%; left: 50%; transform: translate(-50%, -50%);"></div>
+        <div class="scene-inner">
+
+            <p class="text-cinematic" data-reveal>
+                Hay historias que empiezan sin que te des cuenta.
+                Un mensaje. Después otro.
+                Y de repente, alguien que hace un mes ni conocías
+                ya forma parte de tus días.
+            </p>
+
+            <div class="spacer-lg"></div>
+
+            <p class="text-cinematic" data-reveal>
+                Bueno, esta es la nuestra.
+            </p>
+
+            <div class="spacer-xl"></div>
+
+            <span class="text-label" data-reveal data-reveal-delay="2400">Capítulo I</span>
+            <div class="spacer-sm"></div>
+            <h1 class="text-title" data-reveal data-reveal-delay="2800">El Comienzo</h1>
+            <div class="spacer-sm"></div>
+            <span class="text-date" data-reveal data-reveal-delay="3200">13 de agosto de 2026</span>
+
+            <button class="btn-start" data-action="next" data-reveal data-reveal-delay="3800">
+                Comenzar <span class="arrow">→</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ESCENA 1 — EL COMIENZO                 -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="scene" id="scene-1">
+        <div class="ambient-glow warm" style="top: 20%; right: -100px;"></div>
+        <div class="scene-inner">
+
+            <p class="text-cinematic" data-reveal>
+                Al principio eran solo mensajes.
+            </p>
+
+            <div class="spacer-md"></div>
+
+            <p class="text-cinematic" data-reveal>
+                Después empezamos a hablar cada vez más.
+                Y sin darnos cuenta aparecieron las llamadas,
+                las fotos random, los audios, los juegos,
+                las noches que se nos hacían demasiado largas...
+            </p>
+
+            <div class="spacer-md"></div>
+
+            <p class="text-cinematic" data-reveal>
+                Hasta que dejaste de ser simplemente alguien con quien hablaba..
+            </p>
+
+            <div class="spacer-lg"></div>
+
+            <p class="text-cinematic" data-reveal>
+                Te convertiste en alguien que esperaba encontrar cuando agarraba el celular.
+            </p>
+
+            <div class="spacer-md"></div>
+
+            <p class="text-cinematic italic" data-reveal>
+                Y así, casi sin darnos cuenta, pasó un mes.
+            </p>
+
+            <button class="btn-continue" data-action="next" data-reveal data-reveal-delay="4200">
+                Continuar <span class="arrow">→</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ESCENA 2 — UN MES (Montaje)            -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="scene scrollable-scene" id="scene-2">
+        <div class="ambient-glow rose" style="bottom: -100px; left: -100px;"></div>
+        <div class="scene-inner">
+
+            <span class="text-label" data-reveal>Un mes</span>
+            <div class="spacer-sm"></div>
+            <h2 class="text-subtitle" data-reveal>Y en ese mes pasaron más cosas de las que pensé que podían pasar en
+                tan poco tiempo.</h2>
+            <div class="spacer-xl"></div>
+
+            <!-- Recuerdo 1 -->
+            <div class="memory-card" data-reveal>
+                <div class="memory-image" data-placeholder="assets/primer-mes/chat-01.png — Nuestros primeros mensajes">
+                    <img src="assets/primer-mes/chat-01.png" alt="Nuestros primeros mensajes">
+                </div>
+                <p class="memory-caption">Los primeros mensajes. Todo empezó acá.</p>
+            </div>
+
+            <div class="spacer-lg"></div>
+
+            <!-- Recuerdo 2 -->
+            <div class="memory-card" data-reveal>
+                <div class="memory-image" data-placeholder="assets/primer-mes/llamada-01.jpg — La primera videollamada">
+                    <img src="assets/primer-mes/llamada-01.jpg" alt="La primera videollamada">
+                </div>
+                <p class="memory-caption">Las primeras llamadas. Horas hablando de cualquier cosa.</p>
+            </div>
+
+            <div class="spacer-lg"></div>
+
+            <!-- Recuerdo 3 -->
+            <div class="memory-card" data-reveal>
+                <div class="memory-image" data-placeholder="assets/primer-mes/terraria-01.png — Terraria juntos">
+                    <img src="assets/primer-mes/terraria-01.png" alt="Terraria juntos">
+                </div>
+                <p class="memory-caption">Terraria. Porque aparentemente ahora también tengo que aprender a jugar esto.
+                </p>
+            </div>
+
+            <div class="spacer-lg"></div>
+
+            <!-- Recuerdo 4 -->
+            <div class="memory-card" data-reveal>
+                <div class="memory-image" data-placeholder="assets/primer-mes/foto-01.jpg — Tus fotos random">
+                    <img src="assets/primer-mes/foto-01.jpg" alt="Tus fotos">
+                </div>
+                <p class="memory-caption">Las fotos que me mandabas de la nada.</p>
+            </div>
+
+            <div class="spacer-lg"></div>
+
+            <!-- Recuerdo 5 -->
+            <div class="memory-card" data-reveal>
+                <div class="memory-image" data-placeholder="assets/primer-mes/audio-screenshot.png — Tus audios">
+                    <img src="assets/primer-mes/audio-screenshot.png" alt="Tus audios">
+                </div>
+                <p class="memory-caption">Tus audios. Podría escucharlos por horas.</p>
+            </div>
+
+            <button class="btn-continue" data-action="next" data-reveal data-reveal-delay="5400">
+                Continuar <span class="arrow">→</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ESCENA 3 — LOS MOMENTOS QUE MÁS GUARDO -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="scene scrollable-scene" id="scene-3">
+        <div class="ambient-glow warm" style="top: 10%; left: -80px;"></div>
+        <div class="ambient-glow rose" style="bottom: 10%; right: -80px;"></div>
+        <div class="scene-inner">
+
+            <span class="text-label" data-reveal>Lo que más guardo</span>
+            <div class="spacer-sm"></div>
+            <h2 class="text-subtitle" data-reveal>De todo este mes, hay cosas que me quedaron especialmente.
+                No necesariamente las más importantes.
+                Algunas son cosas bastante tontas.
+                Pero son esas pequeñas cosas que, por alguna razón,
+                cada vez que las recuerdo me hacen sonreír.</h2>
+            <div class="spacer-xl"></div>
+
+            <!-- Momento 01 — Audio -->
+            <div style="position:relative; width:100%;">
+                <span class="text-moment-num" data-reveal>01</span>
+            </div>
+            <div class="spacer-sm"></div>
+            <p class="text-cinematic" data-reveal>Ese audio.</p>
+            <div class="spacer-sm"></div>
+            <p class="text-cinematic italic" data-reveal
+                style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: var(--muted);">
+                No sé cómo explicarte lo mucho que me gusta escucharlo.
+            </p>
+            <div class="spacer-md"></div>
+
+            <div class="audio-player" data-reveal>
+                <button class="audio-play-btn" id="audio-play-btn" aria-label="Reproducir audio">
+                    <svg viewBox="0 0 24 24">
+                        <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                </button>
+                <div class="audio-info">
+                    <div class="audio-title">Audio de voz</div>
+                    <div class="audio-progress-bar" id="audio-progress">
+                        <div class="audio-progress-fill" id="audio-progress-fill"></div>
+                    </div>
+                    <div class="audio-time" id="audio-time">0:00 / 0:00</div>
+                </div>
+            </div>
+
+            <div class="spacer-xl"></div>
+            <div class="moment-line" data-reveal></div>
+            <div class="spacer-xl"></div>
+
+            <!-- Momento 02 — Mensaje -->
+            <div style="position:relative; width:100%;">
+                <span class="text-moment-num" data-reveal>02</span>
+            </div>
+            <div class="spacer-sm"></div>
+            <p class="text-cinematic" data-reveal>Ese mensaje.</p>
+            <div class="spacer-md"></div>
+
+            <div class="memory-card" data-reveal>
+                <div class="memory-image" data-placeholder="assets/primer-mes/mensaje-01.png — El mensaje que guardo">
+                    <img src="assets/primer-mes/mensaje-01.png" alt="El mensaje que guardo">
+                </div>
+            </div>
+
+            <div class="spacer-xl"></div>
+            <div class="moment-line" data-reveal></div>
+            <div class="spacer-xl"></div>
+
+            <!-- Momento 03 — Videollamada -->
+            <div style="position:relative; width:100%;">
+                <span class="text-moment-num" data-reveal>03</span>
+            </div>
+            <div class="spacer-sm"></div>
+            <p class="text-cinematic" data-reveal>Las videollamadas.</p>
+            <div class="spacer-sm"></div>
+            <p class="text-cinematic italic" data-reveal
+                style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: var(--muted);">
+                La primera de muchas, espero.
+            </p>
+            <div class="spacer-md"></div>
+
+            <div class="memory-card" data-reveal>
+                <div class="memory-image"
+                    data-placeholder="assets/primer-mes/llamada-02.jpg — Nuestra primera videollamada">
+                    <img src="assets/primer-mes/llamada-02.jpg" alt="Nuestra primera videollamada">
+                </div>
+            </div>
+
+            <div class="spacer-xl"></div>
+            <div class="moment-line" data-reveal></div>
+            <div class="spacer-xl"></div>
+
+            <!-- Momento 04 — Terraria -->
+            <div style="position:relative; width:100%;">
+                <span class="text-moment-num" data-reveal>04</span>
+            </div>
+            <div class="spacer-sm"></div>
+            <p class="text-cinematic" data-reveal>Noches de videojuegos.</p>
+            <div class="spacer-sm"></div>
+            <p class="text-cinematic italic" data-reveal
+                style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: var(--muted);">
+                Empezamos jugando una cosa. Después otra. Y otra: REPO, Roblox, Minecraft, PEAK, Content Warning,
+                Terraria... Y todavía seguimos sumando juegos a la lista.
+            </p>
+            <div class="spacer-md"></div>
+
+            <div class="memory-card" data-reveal>
+                <div class="memory-image" data-placeholder="assets/primer-mes/terraria-02.png — Terraria juntos">
+                    <img src="assets/primer-mes/terraria-02.png" alt="Terraria juntos">
+                </div>
+            </div>
+
+            <div class="spacer-xl"></div>
+            <div class="moment-line" data-reveal></div>
+            <div class="spacer-xl"></div>
+
+            <!-- Momento 05 — Collage -->
+            <div style="position:relative; width:100%;">
+                <span class="text-moment-num" data-reveal>05</span>
+            </div>
+            <div class="spacer-sm"></div>
+            <p class="text-cinematic" data-reveal>Fotos random, mensajes inesperados, boludeces. Cosas que parecen
+                pequeñas, pero que terminaron haciendo que este mes fuera nuestro..</p>
+            <div class="spacer-md"></div>
+
+            <div class="memory-grid" data-reveal>
+                <div class="memory-grid-item" data-placeholder="assets/primer-mes/collage 1.png">
+                    <img src="assets/primer-mes/collage 1.png" alt="">
+                </div>
+                <div class="memory-grid-item" data-placeholder="assets/primer-mes/collage 2.png">
+                    <img src="assets/primer-mes/collage 2.png" alt="">
+                </div>
+                <div class="memory-grid-item" data-placeholder="assets/primer-mes/collage 3.png">
+                    <img src="assets/primer-mes/collage 3.png" alt="">
+                </div>
+                <div class="memory-grid-item" data-placeholder="assets/primer-mes/collage 4.png">
+                    <img src="assets/primer-mes/collage 4.png" alt="">
+                </div>
+                <div class="memory-grid-item" data-placeholder="assets/primer-mes/collage 5.png">
+                    <img src="assets/primer-mes/collage 5.png" alt="">
+                </div>
+                <div class="memory-grid-item" data-placeholder="assets/primer-mes/collage 6.png">
+                    <img src="assets/primer-mes/collage 6.png" alt="">
+                </div>
+            </div>
+
+            <button class="btn-continue" data-action="next" data-reveal data-reveal-delay="5000">
+                Continuar <span class="arrow">→</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ESCENA 4 — NUESTRA PEQUEÑA HISTORIA    -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="scene" id="scene-4">
+        <div class="ambient-glow warm" style="top: 40%; left: 50%; transform: translate(-50%, -50%);"></div>
+        <div class="scene-inner">
+
+            <span class="text-label" data-reveal>Para vos</span>
+            <div class="spacer-lg"></div>
+
+            <div class="intimate-text">
+
+                <p class="text-cinematic" data-reveal>
+                    Estamos lejos.
+                </p>
+
+                <p class="text-cinematic" data-reveal>
+                    Eso es un hecho.
+                </p>
+
+                <p class="text-cinematic" data-reveal>
+                    Pero durante este mes hiciste que se sintiera mucho menos.
+                </p>
+
+                <p class="text-cinematic" data-reveal>
+                    Con cada mensaje.
+                    Con cada foto que me mandabas de la nada.
+                    Con cada audio.
+                    Con cada llamada que terminaba durando más de lo que pensábamos.
+                </p>
+
+                <p class="text-cinematic" data-reveal>
+                    Con todas esas noches en las que supuestamente íbamos a jugar
+                    y terminábamos hablando más que jugando.
+                </p>
+
+                <p class="text-cinematic" data-reveal>
+                    Y creo que eso es de las cosas que más me gustan de nosotros.Que incluso estando lejos
+                    Encontraste la forma de estar presente en mis días.
+                </p>
+
+                <p class="text-cinematic" data-reveal>
+                    Y después llegó ese primer “te amo”.
+                    Y no sé.
+                </p>
+
+                <p class="text-cinematic italic" data-reveal>
+                    Creo que ahí entendí un poquito más lo mucho que significabas para mí.
+                </p>
+
+            </div>
+
+            <button class="btn-continue" data-action="next" data-reveal data-reveal-delay="6400">
+                Continuar <span class="arrow">→</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ESCENA 6 — 13 DE SEPTIEMBRE            -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="scene scene-final" id="scene-6">
+        <div class="ambient-glow warm"
+            style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px;"></div>
+        <div class="ambient-glow rose"
+            style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px;"></div>
+        <div class="scene-inner">
+
+            <span class="text-date" data-reveal>13 de septiembre de 2026</span>
+
+            <div class="spacer-lg"></div>
+
+            <h2 class="text-title" data-reveal data-reveal-delay="1200">Un mes.</h2>
+
+            <div class="spacer-md"></div>
+
+            <p class="text-cinematic" data-reveal data-reveal-delay="2200">
+                Un mes desde que empezó todo esto.
+            </p>
+
+            <div class="spacer-lg"></div>
+
+            <p class="text-cinematic" data-reveal data-reveal-delay="3400">
+                Y si este fue solamente el primer capítulo…
+            </p>
+
+            <div class="spacer-md"></div>
+
+            <p class="text-cinematic italic" data-reveal data-reveal-delay="4600">
+                me muero de ganas de ver los que siguen.
+            </p>
+
+            <div class="spacer-xl"></div>
+
+            <h2 class="text-title" data-reveal data-reveal-delay="6000" style="font-size: clamp(1.8rem, 5vw, 2.8rem);">
+                Feliz primer mes para mi morochita. <span class="heart-final" data-reveal
+                    data-reveal-delay="7000">❤️</span>
+            </h2>
+
+            <div class="spacer-md"></div>
+
+            <p class="text-cinematic" data-reveal data-reveal-delay="7600"
+                style="font-size: clamp(0.85rem, 2vw, 0.95rem); color: var(--muted);">
+                Gracias por este primer capítulo. Te amo.
+            </p>
+
+            <button class="btn-continue" data-action="next" data-reveal data-reveal-delay="8400">
+                Ver lo que sigue <span class="arrow">→</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ESCENA 7 — EL FUTURO                   -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="scene" id="scene-7">
+        <div class="ambient-glow warm" style="top: 30%; left: 50%; transform: translate(-50%, -50%);"></div>
+        <div class="scene-inner">
+
+            <span class="text-label" data-reveal>Nuestra historia</span>
+            <div class="spacer-lg"></div>
+
+            <div class="chapters-preview">
+
+                <!-- Capítulo I -->
+                <div class="chapter-preview-item completed">
+                    <div class="chapter-preview-status">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="chapter-preview-info">
+                        <h3>Capítulo I — El Comienzo</h3>
+                        <p>✓ Completado</p>
+                    </div>
+                </div>
+
+                <!-- Capítulo II -->
+                <div class="chapter-preview-item next">
+                    <div class="chapter-preview-status">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <div class="chapter-preview-info">
+                        <h3>Capítulo II — ???</h3>
+                        <p>Octubre 2026 · Próximamente</p>
+                    </div>
+                </div>
+
+                <!-- Capítulo III -->
+                <div class="chapter-preview-item locked">
+                    <div class="chapter-preview-status">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <div class="chapter-preview-info">
+                        <h3>Capítulo III — ???</h3>
+                        <p>Noviembre 2026 · Bloqueado</p>
+                    </div>
+                </div>
+
+                <!-- Capítulo IV -->
+                <div class="chapter-preview-item locked">
+                    <div class="chapter-preview-status">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <div class="chapter-preview-info">
+                        <h3>Capítulo IV — ???</h3>
+                        <p>Diciembre 2026 · Bloqueado</p>
+                    </div>
+                </div>
+
+                <!-- Capítulo V -->
+                <div class="chapter-preview-item locked">
+                    <div class="chapter-preview-status">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <div class="chapter-preview-info">
+                        <h3>Capítulo V — ???</h3>
+                        <p>Enero 2027 · Bloqueado</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="spacer-xl"></div>
+
+            <p class="text-cinematic italic" data-reveal data-reveal-delay="2500"
+                style="font-size: clamp(0.9rem, 2.5vw, 1.05rem); color: var(--muted);">
+                Esta historia recién empieza, mi amor.
+            </p>
+
+            <div class="spacer-lg"></div>
+
+            <a href="index.html.html" class="btn-continue visible" style="opacity: 0; margin-top: 0;" data-reveal
+                data-reveal-delay="3200">
+                Volver al inicio <span class="arrow">→</span>
+            </a>
+
+        </div>
+    </div>
+
+    <script src="primer-mes.js"></script>
+
+</body>
+
+</html>
